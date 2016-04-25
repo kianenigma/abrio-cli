@@ -2,7 +2,7 @@
   Sdk used By Developers to create custom logic for their apps.
 
 
-## CLI configurations
+## CLI configurations for local usage 
   to test the cli tool :
 
   + move to cli directory and create a virtual env
@@ -18,3 +18,10 @@
   ```
 
   Abrio CLI is now installed. 
+  
+## Abrio CLI on PyPi 
+  Abrio cli is now on PyPiTest repository. install it using
+   
+  ```
+  pip install pip install AbrIO
+  ```
