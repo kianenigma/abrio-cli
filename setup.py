@@ -15,7 +15,7 @@ setup(
         'requests_toolbelt'
     ],
 
-    # Application Entry Pont . Probably Just this one
+    # Application Entry Point . Probably Just this one
     entry_points={
         'console_scripts' : ['abrio=abriocli.abrio:cli']
     } ,

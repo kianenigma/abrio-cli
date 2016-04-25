@@ -1,13 +1,15 @@
 import click
 import os , zipfile
-import abriocli
 import requests
 import json
 from clint.textui.progress import Bar as ProgressBar
 from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
+import conf.conf as configuration
 
-base_url = "http://127.0.0.1:5000"
-api_url = "/api/v1/component"
+base_url = configuration.config['server']['host']
+api_url  = configuration.config['server']['api_url']
+sdk_file = configuration.config['sdk_file']
+
 def get_file_path(file_path) :
     '''
     get a file relative path from packages install directory
@@ -46,13 +48,14 @@ def cli():
 @cli.command()
 def init() :
     project_name = ""
+    click.echo(configuration)
     while not project_name:
         project_name = raw_input("Enter Project Name: ")
 
     project_version = (raw_input("Enter Project version (default = 1): ") or '1')
 
     os.mkdir(project_name)
-    zfile = zipfile.ZipFile(get_file_path('AbrioSDK-V.0.0.1.zip'))
+    zfile = zipfile.ZipFile(get_file_path(sdk_file))
     zfile.extractall(project_name)
     config_json = """{\n  "name":"%s",\n  "version":"%s",\n  "private key":""\n}""" % (project_name,project_version)
     config_file = open(project_name+'/abrio.json',"w+")
