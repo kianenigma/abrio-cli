@@ -17,7 +17,8 @@ setup(
     install_requires=[
         'Click',
         'clint',
-        'requests_toolbelt'
+        'requests_toolbelt',
+        'terminaltables'
     ],
 
     # Application Entry Point . Probably Just this one
