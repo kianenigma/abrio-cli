@@ -1,6 +1,6 @@
 import os
 from ..conf.conf import config
-
+from ..project.project import load_project_config
 def ensure_abrio_root() :
     path = os.getcwd()
     file = config['abrio_root_file']
@@ -9,3 +9,9 @@ def ensure_abrio_root() :
     return False
 
 
+def ensure_component_exists(name) :
+    config = load_project_config()
+    components = [ component['name'] for component in config['components'] ]
+    if name in components :
+        return  True
+    return False

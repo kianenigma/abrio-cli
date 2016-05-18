@@ -1,10 +1,13 @@
 config = {
     "server" : {
-        "host" : "http://127.0.0.1:5000",
-        "api_url" : "/api/v1/component"
+        "host" : "http://127.0.0.1:5000/api/v1/",
     } ,
     "abrio_root_file" : "abrio.json",
     "sdk_file" : "AbrioSDK-V0.0.3.zip"
+}
+
+errors = {
+    "UNKNOWN_NETWORK" : "Unknown Error occurred while connection to server. try again"
 }
 
 from os.path import *

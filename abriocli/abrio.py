@@ -9,16 +9,12 @@ import component.component as Component
 import project.project as Project
 import conf.conf as configuration
 
-base_url = configuration.config['server']['host']
-api_url  = configuration.config['server']['api_url']
-sdk_file = configuration.config['sdk_file']
-
-def get_file_path(file_path) :
-    '''
-    get a file relative path from packages install directory
-    '''
-    return os.path.join(
-    os.path.dirname(__file__),'data',file_path )
+# def get_file_path(file_path) :
+#     '''
+#     get a file relative path from packages install directory
+#     '''
+#     return os.path.join(
+#     os.path.dirname(__file__),'data',file_path )
 
 def create_callback(encoder):
     encoder_len = encoder.len
@@ -74,6 +70,7 @@ project.add_command(Project.status)
 component.add_command(Component.init)
 component.add_command(Component.upload)
 component.add_command(Component.rm)
+component.add_command(Component.ls)
 # @cli.command()
 # def deploy() :
 #     '''
