@@ -10,8 +10,7 @@ from clint.textui.progress import Bar as ProgressBar
 from ..util.checker import *
 from ..conf.conf import config, get_full_path
 from ..project.project import add_component_project, remove_component_project, load_project_config,\
-    load_component_config,write_component_config
-from ..util.checker import ensure_component_exists
+    load_component_config,write_component_config,ensure_abrio_root, ensure_component_exists
 from ..conf.conf import config,errors
 
 

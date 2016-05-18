@@ -1,5 +1,6 @@
-import click
-import json
+import click, json, requests, os
+
+from ..conf.conf import errors,config
 
 @click.command()
 @click.option('--pkey', prompt="Enter Project private key (create one in website if you don't have one)",)
@@ -28,7 +29,23 @@ def deploy() :
     '''
     Deploy Abrio project
     '''
-    pass
+    if not ensure_abrio_root():
+        click.secho('\nAbrio Root Directory Not Detected.\n', fg="red", bold=True)
+        return
+    pkey = load_project_config()['private_key']
+    response = requests.post(
+        config['server']['host'] + 'project/start',
+        json={'private_key' : pkey }
+    )
+
+    if response.status_code == 200:
+        click.secho("\nProject Successfully Lunched.\n", bold=True, fg='green')
+
+    if response.status_code == 409 :
+        click.secho("\nProject already lunched.\n" , bold=True, fg="yellow")
+
+    else:
+        click.secho(errors["UNKNOWN_NETWORK"], bold=True, fg="red")
 
 
 @click.command()
@@ -36,7 +53,20 @@ def stop() :
     '''
     Stop Abrio Project
     '''
-    pass
+    if not ensure_abrio_root():
+        click.secho('\nAbrio Root Directory Not Detected.\n', fg="red", bold=True)
+        return
+    pkey = load_project_config()['private_key']
+    response = requests.post(
+        config['server']['host'] + 'project/stop',
+        json={'private_key': pkey}
+    )
+
+    if response.status_code == 200:
+        click.secho("\nProject Successfully Stopped.\n", bold=True, fg='green')
+
+    else:
+        click.secho(errors["UNKNOWN_NETWORK"], bold=True, fg="red")
 
 
 @click.command()
@@ -113,4 +143,17 @@ def remove_component_project(name) :
             write_project_config(config)
             return
 
+def ensure_component_exists(name) :
+    config = load_project_config()
+    components = [ component['name'] for component in config['components'] ]
+    if name in components :
+        return  True
+    return False
 
+
+def ensure_abrio_root() :
+    path = os.getcwd()
+    file = config['abrio_root_file']
+    if os.path.exists(os.path.join(path, file)) :
+        return True
+    return False
