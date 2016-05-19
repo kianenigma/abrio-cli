@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     # Main Descriptions
     name="AbrIO",
-    version="0.0.4",
+    version="0.0.41",
     description = 'Abrio Engine cli for developers',
     author = 'AbrIO',
     author_email = 'abrioengine@gmail.com',
@@ -11,7 +11,7 @@ setup(
     download_url = 'https://github.com/Abrioengine/abrio-cli/archive/0.0.4.tar.gz',
 
     # Included packages
-    packages=['abriocli'],
+    packages=['abriocli', 'abriocli.component', 'abriocli.project', 'abriocli.util', 'abriocli.conf'],
 
     # Included Dependencies
     install_requires=[
