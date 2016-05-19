@@ -24,4 +24,6 @@
    
   ```
   pip install AbrIO
+  # if not found : 
+  pip install --extra-index-url https://testpypi.python.org/pypi AbrIO
   ```
