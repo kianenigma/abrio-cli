@@ -1,6 +1,6 @@
-import click, json, requests, os
-
-from ..conf.conf import errors,config
+import click, requests, json
+from terminaltables import AsciiTable
+from ..conf.conf import errors
 from ..util.file import *
 from ..util.checker import *
 
@@ -18,7 +18,7 @@ def init(pkey, email, password) :
         'password' : password,
         'private_key' : pkey,
         'components' : [],
-        'created_at' : ''
+        'create_date' : ''
     }
 
     write_project_config(config)
@@ -58,6 +58,7 @@ def stop() :
     if not ensure_abrio_root():
         click.secho('\nAbrio Root Directory Not Detected.\n', fg="red", bold=True)
         return
+
     pkey = load_project_config()['private_key']
     response = requests.post(
         config['server']['host'] + 'project/stop',
@@ -76,4 +77,34 @@ def status() :
     '''
     View Abrio project status
     '''
-    pass
+    if not ensure_abrio_root():
+        click.secho('\nAbrio Root Directory Not Detected.\n', fg="red", bold=True)
+        return
+
+    click.secho("\nConnecting to server..\n", fg='yellow', bold=True)
+    project_config = load_project_config()
+    pkey = project_config['private_key']
+    response = requests.get(
+        config['server']['host'] + 'project/status',
+        json={'private_key': pkey}
+    )
+    if response.status_code == 200 :
+        content = json.loads(response.content)
+        project_config['create_date'] = content['create_date']
+        project_config['name'] = content['name']
+        write_project_config(project_config)
+
+        project_table = [
+            ['Name', "Is Running", "Created At", "Owner"],
+            [
+                project_config['name'],
+                str(content['is_running']),
+                project_config['create_date'],
+                project_config['email']
+            ]
+        ]
+        click.echo(AsciiTable(project_table).table)
+
+    else :
+        click.secho(errors["UNKNOWN_NETWORK"], bold=True, fg="red")
+
