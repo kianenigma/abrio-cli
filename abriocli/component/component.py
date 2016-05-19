@@ -1,6 +1,7 @@
-import click, os ,zipfile, json
+import click, zipfile, json
 import requests
 import datetime
+from colorclass import Color
 from terminaltables import AsciiTable
 
 from requests.auth import HTTPBasicAuth
@@ -149,20 +150,46 @@ def ls() :
         click.secho('\nAbrio Root Directory Not Detected.\n', fg="red", bold=True)
         return
 
-    config = load_project_config()
-    component_table = [
-        ['Component Name', 'Version', 'Public' , "Last Upload"]
-    ] + [
-            [
-                component['name'],
-                component['version'],
-                str(component['public']),
-                component['last_uploaded']
-            ] for component in config['components']
-        ]
 
-    table = AsciiTable(component_table)
-    click.echo(table.table)
+
+    project_config = load_project_config()
+
+    response = requests.get(
+        config['server']['host'] + "project/list_components",
+        json={'private_key': project_config['private_key']}
+    )
+
+    if response.status_code == 200 :
+        component_table = [
+                        ['Component Name', 'Version', 'Public', "Last Upload" , "Type"]] + \
+                        [
+                            [
+                                component['name'],
+                                component['version'],
+                                str(component['public']),
+                                component['last_uploaded'],
+                                Color('{autoyellow}Local{/autoyellow}')
+                            ] for component in project_config['components']
+                        ]
+
+        component_table += [
+            [
+                comp['name'],
+                comp['deploy_version'],
+                 str(not comp['private']),
+                 "---",
+                 Color('{autocyan}Online{/autocyan}')
+             ] for comp in json.loads(response.content)['result']]
+
+
+        table = AsciiTable(component_table)
+        click.echo(table.table)
+
+    else :
+        click.secho(errors["UNKNOWN_NETWORK"], bold=True, fg="red")
+
+
+
 
 def create_callback(encoder):
     encoder_len = encoder.len
