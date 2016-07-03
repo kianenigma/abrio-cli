@@ -1,9 +1,10 @@
 config = {
     "server" : {
-        "host" : "http://127.0.0.1:5000/api/v1/",
+        # "host" : "http://127.0.0.1:5000/api/v1/",
+        "host" : "http://abrio.ir/api/v1/",
     } ,
     "abrio_root_file" : "abrio.json",
-    "sdk_file" : "AbrioSDK-V0.0.4.zip"
+    "sdk_file" : "AbrioSDK-V0.0.5.zip"
 }
 
 errors = {

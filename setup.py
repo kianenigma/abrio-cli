@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     # Main Descriptions
     name="AbrIO",
-    version="0.0.43",
+    version="0.0.5",
     description = 'Abrio Engine cli for developers',
     author = 'AbrIO',
     author_email = 'abrioengine@gmail.com',
